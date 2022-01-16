@@ -2263,6 +2263,11 @@ public class NotificationManagerService extends SystemService {
                     unsnoozeAll();
                 }
             }
+            if (uri == null || NOTIFICATION_SOUND_VIB_SCREEN_ON.equals(uri)) {
+                mSoundVibScreenOn = Settings.System.getIntForUser(resolver,
+                        Settings.System.NOTIFICATION_SOUND_VIB_SCREEN_ON, 1,
+                        UserHandle.USER_CURRENT) == 1;
+            }
         }
 
         public void update(Uri uri, int userId) {
