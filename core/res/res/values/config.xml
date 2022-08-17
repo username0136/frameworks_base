@@ -6986,4 +6986,7 @@
 
     <!-- The key containing the branching boolean for legacy Search. -->
     <string name="config_defaultContextualSearchLegacyEnabled" translatable="false" />
+
+    <!-- Whether to cancel fingerprint operation if not idle -->
+    <bool name="config_fpCancelIfNotIdle">false</bool>
 </resources>
