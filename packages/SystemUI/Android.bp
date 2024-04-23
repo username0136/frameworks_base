@@ -173,7 +173,7 @@ android_library {
     manifest: "AndroidManifest.xml",
 
     javacflags: [
-        "-Adagger.fastInit=enabled",
+        // "-Adagger.fastInit=enabled",
         "-Adagger.explicitBindingConflictsWithInject=ERROR",
         "-Adagger.strictMultibindingValidation=enabled",
         "-Aroom.schemaLocation=frameworks/base/packages/SystemUI/schemas",
