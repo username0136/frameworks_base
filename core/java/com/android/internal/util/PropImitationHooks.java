@@ -51,9 +51,8 @@ public class PropImitationHooks {
     private static final String PACKAGE_LIVEWALLPAPER = "com.google.pixel.livewallpaper";
 
     private static final String PACKAGE_PIXELTHEMES = "com.google.android.apps.customization.pixel";
-
-    private static final String PACKAGE_SUBSCRIPTION_RED = "com.google.android.apps.subscriptions.red";
     private static final String PACKAGE_WALLPAPER = "com.google.android.apps.wallpaper";
+    private static final String PACKAGE_WALLPAPEREFFECTS = "com.google.android.wallpaper.effects";
 
     private static final String PACKAGE_GPHOTOS = "com.google.android.apps.photos";
     private static final String PACKAGE_NETFLIX = "com.netflix.mediaclient";
@@ -71,15 +70,15 @@ public class PropImitationHooks {
     private static final String FEATURE_NEXUS_PRELOAD =
             "com.google.android.apps.photos.NEXUS_PRELOAD";
 
-    private static final Map<String, String> sPixelEightProps = Map.of(
-        "PRODUCT", "husky",
-        "DEVICE", "husky",
-        "HARDWARE", "husky",
+    private static final Map<String, String> sPixelSixProps = Map.of(
+        "PRODUCT", "raven",
+        "DEVICE", "raven",
+        "HARDWARE", "raven",
         "MANUFACTURER", "Google",
         "BRAND", "google",
-        "MODEL", "Pixel 8 Pro",
-        "ID", "AP1A.240505.005",
-        "FINGERPRINT", "google/husky/husky:14/AP1A.240505.005/11677807:user/release-keys"
+        "MODEL", "Pixel 6 Pro",
+        "ID", "AP1A.240505.004",
+        "FINGERPRINT", "google/raven/raven:14/AP1A.240505.004/11583682:user/release-keys"
     );
 
     private static final Map<String, String> sPixelOneProps = Map.of(
@@ -99,7 +98,9 @@ public class PropImitationHooks {
         "PIXEL_2019_MIDYEAR_PRELOAD",
         "PIXEL_2019_PRELOAD",
         "PIXEL_2020_EXPERIENCE",
-        "PIXEL_2020_MIDYEAR_EXPERIENCE"
+        "PIXEL_2020_MIDYEAR_EXPERIENCE",
+        "PIXEL_2021_EXPERIENCE",
+        "PIXEL_2021_MIDYEAR_EXPERIENCE"
     );
 
     private static volatile String[] sCertifiedProps;
@@ -134,27 +135,21 @@ public class PropImitationHooks {
         sIsFinsky = packageName.equals(PACKAGE_FINSKY);
         sIsPhotos = sSpoofGapps && packageName.equals(PACKAGE_GPHOTOS);
 
-        /* Set certified properties for GMSCore
-         * Set stock fingerprint for ARCore
-         * Set Pixel 8 Pro for Google, ASI and GMS device configurator
-         * Set Pixel XL for Google Photos
-         * Set custom model for Netflix
-         */
         if (sIsGms) {
             setCertifiedPropsForGms();
         } else if (!sStockFp.isEmpty() && packageName.equals(PACKAGE_ARCORE)) {
             dlog("Setting stock fingerprint for: " + packageName);
             setPropValue("FINGERPRINT", sStockFp);
         } else if (sSpoofGapps && (packageName.equals(PACKAGE_VELVET)
-		|| packageName.equals(PACKAGE_SUBSCRIPTION_RED)
 		|| packageName.equals(PACKAGE_EMOJIWALLPAPER)
 		|| packageName.equals(PACKAGE_LIVEWALLPAPER)
                 || packageName.equals(PACKAGE_PIXELTHEMES)
 		|| packageName.equals(PACKAGE_WALLPAPER)
+        || packageName.equals(PACKAGE_WALLPAPEREFFECTS)
                 || (packageName.equals(PACKAGE_GMS)
 		&& processName.equals(PROCESS_GMS_PERSISTENT)))) {
-            dlog("Spoofing Pixel 8 Pro for: " + packageName + " process: " + processName);
-            sPixelEightProps.forEach(PropImitationHooks::setPropValue);
+            dlog("Spoofing Pixel 6 Pro for: " + packageName + " process: " + processName);
+            sPixelSixProps.forEach(PropImitationHooks::setPropValue);
         } else if (sIsPhotos) {
             dlog("Spoofing Pixel 1 for Google Photos");
             sPixelOneProps.forEach((PropImitationHooks::setPropValue));
