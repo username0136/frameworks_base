@@ -58,6 +58,14 @@ public class PropImitationHooks {
     private static final String PACKAGE_NETFLIX = "com.netflix.mediaclient";
     private static final String PACKAGE_VELVET = "com.google.android.googlequicksearchbox";
 
+// Gaming Packages
+    private static final String G_ONE = "com.pubg.imobile";
+    private static final String G_TWO = "com.pubg.krmobile";
+    private static final String G_THR = "com.rekoo.pubgm";
+    private static final String G_FOU = "com.tencent.ig";
+    private static final String G_FIV = "com.tencent.tmgp.pubgmhd";
+    private static final String G_SIX = "com.vng.pubgmobile";
+
     private static final String PROCESS_GMS_PERSISTENT = PACKAGE_GMS + ".persistent";
     private static final String PROCESS_GMS_UNSTABLE = PACKAGE_GMS + ".unstable";
 
@@ -90,6 +98,11 @@ public class PropImitationHooks {
         "MODEL", "Pixel",
         "ID", "QP1A.191005.007.A3",
         "FINGERPRINT", "google/sailfish/sailfish:10/QP1A.191005.007.A3/5972272:user/release-keys"
+    );
+
+    private static final Map<String, String> sOneplusEightProProps = Map.of(
+        "MANUFACTURER", "OnePlus",
+        "MODEL", "IN2020"
     );
 
     private static final Set<String> sPixelFeatures = Set.of(
@@ -150,6 +163,8 @@ public class PropImitationHooks {
 		&& processName.equals(PROCESS_GMS_PERSISTENT)))) {
             dlog("Spoofing Pixel 6 Pro for: " + packageName + " process: " + processName);
             sPixelSixProps.forEach(PropImitationHooks::setPropValue);
+        } else if (packageName.equals(G_ONE) || packageName.equals(G_TWO) || packageName.equals(G_THR) || packageName.equals(G_FOU) || packageName.equals(G_FIV) || packageName.equals(G_SIX)) {
+            sOneplusEightProProps.forEach(PropImitationHooks::setPropValue);
         } else if (sIsPhotos) {
             dlog("Spoofing Pixel 1 for Google Photos");
             sPixelOneProps.forEach((PropImitationHooks::setPropValue));
