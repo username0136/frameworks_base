@@ -46,7 +46,6 @@ public class PropImitationHooks {
     private static final String PACKAGE_AIWALLPAPERS = "com.google.android.apps.aiwallpapers";
     private static final String PACKAGE_ARCORE = "com.google.ar.core";
     private static final String PACKAGE_ASSISTANT = "com.google.android.apps.googleassistant";
-    private static final String PACKAGE_ASI = "com.google.android.as";
     private static final String PACKAGE_EMOJIWALLPAPER = "com.google.android.apps.emojiwallpaper";
 
     private static final String PACKAGE_FINSKY = "com.android.vending";
@@ -55,7 +54,6 @@ public class PropImitationHooks {
 
     private static final String PACKAGE_PIXELTHEMES = "com.google.android.apps.customization.pixel";
     private static final String PACKAGE_PIXELWALLPAPER = "com.google.android.apps.wallpaper.pixel";
-    private static final String PACKAGE_TURBO = "com.google.android.apps.turbo";
 
     private static final String PACKAGE_SUBSCRIPTION_RED = "com.google.android.apps.subscriptions.red";
     private static final String PACKAGE_WALLPAPER = "com.google.android.apps.wallpaper";
@@ -169,8 +167,6 @@ public class PropImitationHooks {
             setPropValue("FINGERPRINT", sStockFp);
         } else if (sSpoofGapps && (packageName.equals(PACKAGE_VELVET)
 		|| packageName.equals(PACKAGE_SUBSCRIPTION_RED)
-		|| packageName.equals(PACKAGE_TURBO)
-                || packageName.equals(PACKAGE_ASI)
                 || packageName.equals(PACKAGE_AIWALLPAPERS)
 		|| packageName.equals(PACKAGE_ASSISTANT)
 		|| packageName.equals(PACKAGE_EMOJIWALLPAPER)
