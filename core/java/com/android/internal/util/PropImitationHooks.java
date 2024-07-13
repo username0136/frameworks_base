@@ -43,7 +43,6 @@ public class PropImitationHooks {
     private static final String TAG = "PropImitationHooks";
     private static final boolean DEBUG = SystemProperties.getBoolean("debug.pihooks.log", false);
 
-    private static final String PACKAGE_AIWALLPAPERS = "com.google.android.apps.aiwallpapers";
     private static final String PACKAGE_ARCORE = "com.google.ar.core";
     private static final String PACKAGE_ASI = "com.google.android.as";
     private static final String PACKAGE_ASSISTANT = "com.google.android.apps.googleassistant";
@@ -56,7 +55,6 @@ public class PropImitationHooks {
 
     private static final String PACKAGE_NEXUSLAUNCHER = "com.google.android.apps.nexuslauncher";
     private static final String PACKAGE_PIXELTHEMES = "com.google.android.apps.customization.pixel";
-    private static final String PACKAGE_PIXELWALLPAPER = "com.google.android.apps.wallpaper.pixel";
     private static final String PACKAGE_LIVEWALLPAPER = "com.google.pixel.livewallpaper";
     private static final String PACKAGE_SUBSCRIPTION_RED = "com.google.android.apps.subscriptions.red";
     private static final String PACKAGE_VELVET = "com.google.android.googlequicksearchbox";
@@ -77,15 +75,15 @@ public class PropImitationHooks {
     private static final ComponentName GMS_ADD_ACCOUNT_ACTIVITY = ComponentName.unflattenFromString(
             "com.google.android.gms/.auth.uiflows.minutemaid.MinuteMaidActivity");
 
-    private static final Map<String, String> sPixelEightProps = Map.of(
-            "PRODUCT", "husky",
-            "DEVICE", "husky",
-            "HARDWARE", "husky",
+    private static final Map<String, String> sPixelSixProps = Map.of(
+            "PRODUCT", "raven",
+            "DEVICE", "raven",
+            "HARDWARE", "raven",
             "MANUFACTURER", "Google",
             "BRAND", "google",
-            "MODEL", "Pixel 8 Pro",
-            "ID", "AP2A.240705.005",
-            "FINGERPRINT", "google/husky/husky:14/AP2A.240705.005/11942872:user/release-keys"
+            "MODEL", "Pixel 6 Pro",
+            "ID", "AP2A.240705.004",
+            "FINGERPRINT", "google/raven/raven:14/AP2A.240705.004/11875680:user/release-keys"
     );
 
     private static final Map<String, String> sPixelFiveProps = Map.of(
@@ -97,17 +95,6 @@ public class PropImitationHooks {
             "MODEL", "Pixel 5a",
             "ID", "AP2A.240705.004",
             "FINGERPRINT", "google/barbet/barbet:14/AP2A.240705.004/11875680:user/release-keys"
-    );
-
-    private static final Map<String, String> sPixelTabletProps = Map.of(
-            "PRODUCT", "tangorpro",
-            "DEVICE", "tangorpro",
-            "HARDWARE", "tangorpro",
-            "MANUFACTURER", "Google",
-            "BRAND", "google",
-            "MODEL", "Pixel Tablet",
-            "ID", "AP2A.240705.005",
-            "FINGERPRINT", "google/tangorpro/tangorpro:14/AP2A.240705.005/11942872:user/release-keys"
     );
 
     private static final Map<String, String> sPixelXLProps = Map.of(
@@ -157,7 +144,7 @@ public class PropImitationHooks {
     private static volatile String sStockFp, sNetflixModel;
 
     private static volatile String sProcessName;
-    private static volatile boolean sIsGms, sIsFinsky, sIsPhotos, sIsTablet;
+    private static volatile boolean sIsGms, sIsFinsky, sIsPhotos;
 
     public static void setProps(Context context) {
         final String packageName = context.getPackageName();
@@ -177,7 +164,6 @@ public class PropImitationHooks {
         sCertifiedProps = res.getStringArray(R.array.config_certifiedBuildProperties);
         sStockFp = res.getString(R.string.config_stockFingerprint);
         sNetflixModel = res.getString(R.string.config_netflixSpoofModel);
-        sIsTablet = res.getBoolean(R.bool.config_spoofasTablet);
 
         sProcessName = processName;
         sIsGms = packageName.equals(PACKAGE_GMS) && processName.equals(PROCESS_GMS_UNSTABLE);
@@ -214,7 +200,6 @@ public class PropImitationHooks {
         }
 
         switch (packageName) {
-            case PACKAGE_AIWALLPAPERS:
             case PACKAGE_ASSISTANT:
             case PACKAGE_ASI:
             case PACKAGE_EMOJIWALLPAPER:
@@ -222,18 +207,12 @@ public class PropImitationHooks {
             case PACKAGE_LIVEWALLPAPER:
             case PACKAGE_NEXUSLAUNCHER:
             case PACKAGE_PIXELTHEMES:
-            case PACKAGE_PIXELWALLPAPER:
             case PACKAGE_SUBSCRIPTION_RED:
             case PACKAGE_VELVET:
             case PACKAGE_WALLPAPER:
             case PACKAGE_WALLPAPEREFFECTS:
-                if (sIsTablet) {
-                    dlog("Spoofing Pixel Tablet for: " + packageName + " process: " + processName);
-                    setProps(sPixelTabletProps);
-                } else {
-                    dlog("Spoofing Pixel 8 Pro for: " + packageName + " process: " + processName);
-                    setProps(sPixelEightProps);
-                }
+                dlog("Spoofing Pixel 8 Pro for: " + packageName + " process: " + processName);
+                setProps(sPixelSixProps);
                 return;
             case PACKAGE_GPHOTOS:
                 dlog("Spoofing Pixel XL for Google Photos");

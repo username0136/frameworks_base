@@ -75,9 +75,6 @@
     <!-- Device model (Build.MODEL) to spoof for netflix, if not empty -->
     <string name="config_netflixSpoofModel" translatable="false"></string>
 
-    <!-- Whether to spoof GMS as Pixel Tablet -->
-    <bool name="config_spoofasTablet">false</bool>
-
     <!-- Whether device has an alert slider. -->
     <bool name="config_hasAlertSlider">false</bool>
 
