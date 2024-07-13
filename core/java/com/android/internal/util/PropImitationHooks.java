@@ -51,6 +51,12 @@ public class PropImitationHooks {
     private static final String PACKAGE_GPHOTOS = "com.google.android.apps.photos";
     private static final String PACKAGE_VELVET = "com.google.android.googlequicksearchbox";
 
+    private static final String G_ONE = "com.pubg.imobile";
+    private static final String G_TWO = "com.pubg.krmobile";
+    private static final String G_THR = "com.rekoo.pubgm";
+    private static final String G_FOU = "com.tencent.tmgp.pubgmhd";
+    private static final String G_FIV = "com.vng.pubgmobile";
+
     private static final String PROCESS_GMS_GAPPS = PACKAGE_GMS + ".gapps";
     private static final String PROCESS_GMS_GSERVICE = PACKAGE_GMS + ".gservice";
     private static final String PROCESS_GMS_LEARNING = PACKAGE_GMS + ".learning";
@@ -96,6 +102,12 @@ public class PropImitationHooks {
             "MODEL", "Pixel XL",
             "ID", "QP1A.191005.007.A3",
             "FINGERPRINT", "google/marlin/marlin:10/QP1A.191005.007.A3/5972272:user/release-keys"
+    );
+
+    private static final Map<String, String> sGameProps = Map.of(
+            "BRAND", "asus",
+            "MANUFACTURER", "asus",
+            "MODEL", "ASUS_AI2401_A"
     );
 
     private static final Set<String> sNexusFeatures = Set.of(
@@ -191,6 +203,13 @@ public class PropImitationHooks {
             case PACKAGE_GPHOTOS:
                 dlog("Spoofing Pixel XL for Google Photos");
                 setProps(sPixelXLProps);
+                return;
+            case G_ONE:
+            case G_TWO:
+            case G_THR:
+            case G_FOU:
+            case G_FIV:
+                setProps(sGameProps);
                 return;
         }
     }
