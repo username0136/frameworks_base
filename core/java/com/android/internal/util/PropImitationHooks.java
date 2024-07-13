@@ -61,6 +61,12 @@ public class PropImitationHooks {
     private static final String PACKAGE_WALLPAPER = "com.google.android.apps.wallpaper";
     private static final String PACKAGE_WALLPAPEREFFECTS = "com.google.android.wallpaper.effects";
 
+    private static final String G_ONE = "com.pubg.imobile";
+    private static final String G_TWO = "com.pubg.krmobile";
+    private static final String G_THR = "com.rekoo.pubgm";
+    private static final String G_FOU = "com.tencent.tmgp.pubgmhd";
+    private static final String G_FIV = "com.vng.pubgmobile";
+
     private static final String PROCESS_GMS_GAPPS = PACKAGE_GMS + ".gapps";
     private static final String PROCESS_GMS_GSERVICE = PACKAGE_GMS + ".gservice";
     private static final String PROCESS_GMS_LEARNING = PACKAGE_GMS + ".learning";
@@ -95,6 +101,12 @@ public class PropImitationHooks {
             "MODEL", "Pixel 5a",
             "ID", "AP2A.240705.004",
             "FINGERPRINT", "google/barbet/barbet:14/AP2A.240705.004/11875680:user/release-keys"
+    );
+
+    private static final Map<String, String> sGameProps = Map.of(
+            "BRAND", "asus",
+            "MANUFACTURER", "asus",
+            "MODEL", "ASUS_AI2401_A"
     );
 
     private static final Map<String, String> sPixelXLProps = Map.of(
@@ -223,6 +235,13 @@ public class PropImitationHooks {
                     dlog("Setting model to " + sNetflixModel + " for Netflix");
                     setPropValue("MODEL", sNetflixModel);
                 }
+                return;
+            case G_ONE:
+            case G_TWO:
+            case G_THR:
+            case G_FOU:
+            case G_FIV:
+                setProps(sGameProps);
                 return;
         }
     }
