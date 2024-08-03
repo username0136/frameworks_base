@@ -44,12 +44,12 @@ public class PropImitationHooks {
     private static final String TAG = "PropImitationHooks";
     private static final boolean DEBUG = SystemProperties.getBoolean("debug.pihooks.log", false);
 
-    private static final String PACKAGE_ARCORE = "com.google.ar.core";
-    private static final String PACKAGE_EMOJIWALLPAPER = "com.google.android.apps.emojiwallpaper";
     private static final String PACKAGE_FINSKY = "com.android.vending";
     private static final String PACKAGE_GMS = "com.google.android.gms";
     private static final String PACKAGE_GPHOTOS = "com.google.android.apps.photos";
     private static final String PACKAGE_VELVET = "com.google.android.googlequicksearchbox";
+    private static final String PACKAGE_WALLPAPER = "com.google.android.apps.wallpaper";
+    private static final String PACKAGE_WALLPAPERENGINE = "com.google.android.wallpaper.effects";
 
     private static final String G_ONE = "com.pubg.imobile";
     private static final String G_TWO = "com.pubg.krmobile";
@@ -70,17 +70,6 @@ public class PropImitationHooks {
 
     private static final ComponentName GMS_ADD_ACCOUNT_ACTIVITY = ComponentName.unflattenFromString(
             "com.google.android.gms/.auth.uiflows.minutemaid.MinuteMaidActivity");
-
-    private static final Map<String, String> sPixelFiveProps = Map.of(
-            "PRODUCT", "barbet",
-            "DEVICE", "barbet",
-            "HARDWARE", "barbet",
-            "MANUFACTURER", "Google",
-            "BRAND", "google",
-            "MODEL", "Pixel 5a",
-            "ID", "AP2A.240705.004",
-            "FINGERPRINT", "google/barbet/barbet:14/AP2A.240705.004/11875680:user/release-keys"
-    );
 
     private static final Map<String, String> sPixelSixProps = Map.of(
             "PRODUCT", "raven",
@@ -105,9 +94,8 @@ public class PropImitationHooks {
     );
 
     private static final Map<String, String> sGameProps = Map.of(
-            "BRAND", "asus",
-            "MANUFACTURER", "asus",
-            "MODEL", "ASUS_AI2401_A"
+            "MANUFACTURER", "OnePlus",
+            "MODEL", "IN2020"
     );
 
     private static final Set<String> sNexusFeatures = Set.of(
@@ -166,7 +154,6 @@ public class PropImitationHooks {
         sIsPhotos = packageName.equals(PACKAGE_GPHOTOS);
 
         /* Set certified properties for GMSCore
-         * Set stock fingerprint for ARCore
          * Set Pixel 6 Pro for Google (Circle Search) and GMS device configurator
          * Set Pixel XL for Google Photos
          */
@@ -182,21 +169,16 @@ public class PropImitationHooks {
             case PROCESS_GMS_LEARNING:
             case PROCESS_GMS_SEARCH:
             case PROCESS_GMS_UPDATE:
-                dlog("Spoofing Pixel 5a for: " + packageName + " process: " + processName);
-                setProps(sPixelFiveProps);
+                dlog("Spoofing Pixel 6 Pro for: " + packageName + " process: " + processName);
+                setProps(sPixelSixProps);
                 return;
         }
 
-        if (!sStockFp.isEmpty() && packageName.equals(PACKAGE_ARCORE)) {
-            dlog("Setting stock fingerprint for: " + packageName);
-            setPropValue("FINGERPRINT", sStockFp);
-            return;
-        }
-
         switch (packageName) {
-            case PACKAGE_EMOJIWALLPAPER:
             case PACKAGE_GMS:
             case PACKAGE_VELVET:
+            case PACKAGE_WALLPAPER:
+            case PACKAGE_WALLPAPERENGINE:
                 dlog("Spoofing Pixel 6 Pro for: " + packageName + " process: " + processName);
                 setProps(sPixelSixProps);
                 return;
