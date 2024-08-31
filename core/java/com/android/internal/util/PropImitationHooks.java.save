@@ -122,8 +122,6 @@ public class PropImitationHooks {
             "PIXEL_2021_EXPERIENCE"
     );
 
-    private static volatile String sStockFp;
-
     private static volatile String sProcessName;
     private static volatile boolean sIsGms, sIsFinsky, sIsPhotos;
 
@@ -141,8 +139,6 @@ public class PropImitationHooks {
             Log.e(TAG, "Null resources");
             return;
         }
-
-        sStockFp = res.getString(R.string.config_stockFingerprint);
 
         sProcessName = processName;
         sIsGms = packageName.equals(PACKAGE_GMS) && processName.equals(PROCESS_GMS_UNSTABLE);
