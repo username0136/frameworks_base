@@ -122,6 +122,7 @@ public class PropImitationHooks {
             "PIXEL_2021_EXPERIENCE"
     );
 
+    private static volatile String[] sCertifiedProps;
     private static volatile String sStockFp;
 
     private static volatile String sProcessName;
@@ -142,6 +143,7 @@ public class PropImitationHooks {
             return;
         }
 
+        sCertifiedProps = res.getStringArray(R.array.config_certifiedBuildProperties);
         sStockFp = res.getString(R.string.config_stockFingerprint);
 
         sProcessName = processName;
@@ -155,6 +157,10 @@ public class PropImitationHooks {
          */
 
         switch (processName) {
+            case PROCESS_GMS_UNSTABLE:
+                dlog("Setting certified props for: " + packageName + " process: " + processName);
+                setCertifiedPropsForGms();
+                return;
             case PROCESS_GMS_PERSISTENT:
             case PROCESS_GMS_GAPPS:
             case PROCESS_GMS_GSERVICE:
@@ -208,6 +214,51 @@ public class PropImitationHooks {
         }
     }
 
+    private static void setCertifiedPropsForGms() {
+        if (sCertifiedProps.length == 0) {
+            dlog("Certified props are not set");
+            return;
+        }
+        final boolean was = isGmsAddAccountActivityOnTop();
+        final TaskStackListener taskStackListener = new TaskStackListener() {
+            @Override
+            public void onTaskStackChanged() {
+                final boolean is = isGmsAddAccountActivityOnTop();
+                if (is ^ was) {
+                    dlog("GmsAddAccountActivityOnTop is:" + is + " was:" + was +
+                            ", killing myself!"); // process will restart automatically later
+                    Process.killProcess(Process.myPid());
+                }
+            }
+        };
+        if (!was) {
+            dlog("Spoofing build for GMS");
+            setCertifiedProps();
+        } else {
+            dlog("Skip spoofing build for GMS, because GmsAddAccountActivityOnTop");
+        }
+        try {
+            ActivityTaskManager.getService().registerTaskStackListener(taskStackListener);
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to register task stack listener!", e);
+        }
+    }
+
+    private static void setCertifiedProps() {
+        for (String entry : sCertifiedProps) {
+            // Each entry must be of the format FIELD:value
+            final String[] fieldAndProp = entry.split(":", 2);
+            if (fieldAndProp.length != 2) {
+                Log.e(TAG, "Invalid entry in certified props: " + entry);
+                continue;
+            }
+            setPropValue(fieldAndProp[0], fieldAndProp[1]);
+        }
+        setSystemProperty(PROP_SECURITY_PATCH, Build.VERSION.SECURITY_PATCH);
+        setSystemProperty(PROP_FIRST_API_LEVEL,
+                Integer.toString(Build.VERSION.DEVICE_INITIAL_SDK_INT));
+    }
+
     private static void setSystemProperty(String name, String value) {
         try {
             SystemProperties.set(name, value);
@@ -215,6 +266,18 @@ public class PropImitationHooks {
         } catch (Exception e) {
             Log.e(TAG, "Failed to set system prop " + name + "=" + value, e);
         }
+    }
+
+    private static boolean isGmsAddAccountActivityOnTop() {
+        try {
+            final ActivityTaskManager.RootTaskInfo focusedTask =
+                    ActivityTaskManager.getService().getFocusedRootTaskInfo();
+            return focusedTask != null && focusedTask.topActivity != null
+                    && focusedTask.topActivity.equals(GMS_ADD_ACCOUNT_ACTIVITY);
+        } catch (Exception e) {
+            Log.e(TAG, "Unable to get top activity!", e);
+        }
+        return false;
     }
 
     public static boolean shouldBypassTaskPermission(Context context) {
@@ -229,6 +292,19 @@ public class PropImitationHooks {
             return false;
         }
         return gmsUid == callingUid;
+    }
+
+    private static boolean isCallerSafetyNet() {
+        return sIsGms && Arrays.stream(Thread.currentThread().getStackTrace())
+                .anyMatch(elem -> elem.getClassName().contains("DroidGuard"));
+    }
+
+    public static void onEngineGetCertificateChain() {
+        // Check stack for SafetyNet or Play Integrity
+        if (isCallerSafetyNet() || sIsFinsky) {
+            dlog("Blocked key attestation sIsGms=" + sIsGms + " sIsFinsky=" + sIsFinsky);
+            throw new UnsupportedOperationException();
+        }
     }
 
     public static boolean hasSystemFeature(String name, boolean has) {
