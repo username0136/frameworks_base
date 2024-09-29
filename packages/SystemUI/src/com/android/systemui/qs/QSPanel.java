@@ -785,8 +785,7 @@ public class QSPanel extends LinearLayout {
             if (currentParent != null) {
                 currentParent.removeView(child);
             }
-            int validIndex = Math.min(index, parent.getChildCount());
-            parent.addView(child, validIndex);
+            parent.addView(child, index);
             return;
         }
         // Same parent, we are just changing indices
@@ -796,7 +795,6 @@ public class QSPanel extends LinearLayout {
             return;
         }
         parent.removeView(child);
-        int validIndex = Math.min(index, parent.getChildCount());
-        parent.addView(child, validIndex);
+        parent.addView(child, index);
     }
 }
