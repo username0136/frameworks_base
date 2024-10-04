@@ -48,6 +48,7 @@ public class PropImitationHooks {
     private static final String PACKAGE_GMS = "com.google.android.gms";
     private static final String PACKAGE_GPHOTOS = "com.google.android.apps.photos";
     private static final String PACKAGE_VELVET = "com.google.android.googlequicksearchbox";
+    private static final String PACKAGE_INTELLIGENCE = "com.google.android.settings.intelligence";
 
     private static final String G_ONE = "com.pubg.imobile";
     private static final String G_TWO = "com.pubg.krmobile";
@@ -78,6 +79,17 @@ public class PropImitationHooks {
             "MODEL", "Pixel 6 Pro",
             "ID", "AP2A.240905.003.F1",
             "FINGERPRINT", "google/raven/raven:14/AP2A.240905.003.F1/12235381:user/release-keys"
+    );
+
+    private static final Map<String, String> sPixelFoldProps = Map.of(
+            "PRODUCT", "felix",
+            "DEVICE", "felix",
+            "HARDWARE", "felix",
+            "MANUFACTURER", "Google",
+            "BRAND", "google",
+            "MODEL", "Pixel Fold",
+            "ID", "AP2A.240905.003",
+            "FINGERPRINT", "google/felix/felix:14/AP2A.240905.003/12231197:user/release-keys"
     );
 
     private static final Map<String, String> sPixelXLProps = Map.of(
@@ -152,7 +164,8 @@ public class PropImitationHooks {
         sIsPhotos = packageName.equals(PACKAGE_GPHOTOS);
 
         /* Set certified properties for GMSCore
-         * Set Pixel 6 Pro for Google (Circle Search) and GMS device configurator
+         * Set Pixel 6 Pro for  GMS device configurator
+         * Set Pixel Fold for Google (Circle Search, New UI), Settings Intelligence for search results fix
          * Set Pixel XL for Google Photos
          */
 
@@ -174,9 +187,13 @@ public class PropImitationHooks {
 
         switch (packageName) {
             case PACKAGE_GMS:
-            case PACKAGE_VELVET:
                 dlog("Spoofing Pixel 6 Pro for: " + packageName + " process: " + processName);
                 setProps(sPixelSixProps);
+                return;
+            case PACKAGE_INTELLIGENCE:
+            case PACKAGE_VELVET:
+                dlog("Spoofing Pixel Fold for: " + packageName + " process: " + processName);
+                setProps(sPixelFoldProps);
                 return;
             case PACKAGE_GPHOTOS:
                 dlog("Spoofing Pixel XL for Google Photos");
